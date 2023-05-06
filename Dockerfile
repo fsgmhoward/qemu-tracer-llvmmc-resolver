@@ -17,7 +17,7 @@ RUN wget --progress=bar:force:noscroll https://capnproto.org/capnproto-c++-0.8.0
     rm capnproto-c++-0.8.0.tar.gz && \
     cd capnproto-c++-0.8.0 && \
     ./configure && \
-    make -j $(nproc --ignore $nprocIgnore) check && \
+    make -j $(nproc) check && \
     make install && \
     ldconfig && \
     cd .. && \
@@ -33,12 +33,11 @@ USER ${USER}
 WORKDIR ${USER_HOME}
 
 RUN mkdir .ssh bin
-RUN ssh-keyscan github.com >> ${USER_HOME}/.ssh/known_hosts && \
-    git clone https://github.com/pangine/llvmmc-resolver && \
+RUN git clone https://github.com/pangine/llvmmc-resolver && \
     cd llvmmc-resolver && \
     cmake -Bbuild . && \
     cd build && \
-    make -j $(nproc --ignore $nprocIgnore) && \
+    make -j $(nproc) && \
     mv resolver ${USER_HOME}/bin && \
     cd ../.. && \
     rm -rf llvmmc-resolver
